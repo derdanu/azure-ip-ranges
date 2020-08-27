@@ -1,0 +1,30 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <h4>Version @ViewData["changeNumber"] of Cloud @ViewData["cloud"]</h4>
+</div>
+<br /><br />
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4">
+
+            <select id='selST' style='width: 250px;'>
+                @foreach (ValuesModel st in  @ViewBag.ServiceTags)
+                {
+                    <option value="@st.id">@st.name</option>
+                }
+            </select>
+            <br />
+            <div id='downloadlink'></div>
+        </div>
+        
+        <div class="col-sm-8" id="result">
+
+        </div>
+    </div>
+</div>
+

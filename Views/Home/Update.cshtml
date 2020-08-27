@@ -1,0 +1,15 @@
+@{
+    ViewData["Title"] = "Update";
+}
+<h1>@ViewData["Title"]</h1>
+
+
+@if (@ViewData["error"] != null)
+{
+    <p>ERROR Updating local database</p>
+    <p>@ViewData["error"]</p>
+}
+else 
+{
+    <p>Updating local cache successfull</p>
+}
