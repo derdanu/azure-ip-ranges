@@ -24,10 +24,10 @@ $(document).ready(function(){
             
             var msg = $.parseJSON(rsp);
 
-            $('#result').html('<textarea id="resultarea" class="form-control" rows="' + msg.length + '"></textarea>'); 
+            $('#result').html('<textarea id="resultarea" class="form-control" rows="' + msg.addressPrefixes.length + '"></textarea>'); 
 
-            for (var i = 0; i < msg.length ; i++) {
-                $('#resultarea').append(msg[i] + '\n');
+            for (var i = 0; i < msg.addressPrefixes.length ; i++) {
+                $('#resultarea').append(msg.addressPrefixes[i] + '\n');
             }
                         
 
