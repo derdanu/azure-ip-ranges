@@ -24,6 +24,17 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Update">Update</a>
                         </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Cloud Environment
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" asp-route-env="PublicCloud" asp-controller="Home" asp-action="changeCloud">PublicCloud</a>
+                            <a class="dropdown-item" asp-route-env="USGovCloud" asp-controller="Home" asp-action="changeCloud">USGovCloud</a>
+                            <a class="dropdown-item" asp-route-env="ChinaCloud" asp-controller="Home" asp-action="changeCloud">ChinaCloud</a>
+                            <a class="dropdown-item" asp-route-env="GermanyCloud" asp-controller="Home" asp-action="changeCloud">GermanyCloud</a>
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </div>

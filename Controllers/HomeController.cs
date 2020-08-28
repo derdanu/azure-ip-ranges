@@ -7,6 +7,7 @@ using System.Net;
 using System.Text.Json;
 using System.IO;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using dotnet.Models;
 using HtmlAgilityPack;
@@ -16,12 +17,12 @@ namespace dotnet.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        
-        private JsonSerializerOptions options; 
 
-        private string remoteUri = "https://www.microsoft.com/en-us/download/confirmation.aspx?id=56519";
-        private string jsonUri;
-        private string fileName = "data.json";
+        private Cloud cloud; 
+
+        public const string SessionKeyName = "_CloudEnv";
+
+        private JsonSerializerOptions options; 
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -30,11 +31,13 @@ namespace dotnet.Controllers
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
                 WriteIndented = true
             };
+            
         }
+
 
         public IActionResult Index()
         {
-
+      
             var jsonModel = getServiceTagsModel();
 
             ViewData["changeNumber"] = jsonModel.changeNumber;
@@ -67,14 +70,9 @@ namespace dotnet.Controllers
         {
 
             try {
-
-                HtmlWeb web = new HtmlWeb();
-                HtmlDocument doc = web.Load(remoteUri);
-
-                jsonUri = doc.DocumentNode.SelectSingleNode("//div[@class = 'link-align']//a").Attributes["href"].Value;
-
-                WebClient myWebClient = new WebClient();
-                myWebClient.DownloadFile(jsonUri,fileName);		
+                
+                UrlModel model = new UrlModel();
+                model.updateClouds();
             
             } catch (Exception e) {
                 ViewData["error"]  = e.ToString();
@@ -84,13 +82,46 @@ namespace dotnet.Controllers
 
         }
 
+        public IActionResult changeCloud(string env) {
+
+            Response.Cookies.Append(SessionKeyName, env);
+            
+            return RedirectToAction("Index");
+
+        }
+
+
         private ServiceTagsModel getServiceTagsModel() {
 
-            if (!System.IO.File.Exists("data.json")) {
-                this.Update();
+            
+            string env = Request.Cookies[SessionKeyName];
+
+          
+             switch (env) {
+                case "PublicCloud":
+                    cloud = new PublicCloud();
+                    break;
+                case "USGovCloud":
+                    cloud = new USGovCloud();
+                    break;
+                case "ChinaCloud": 
+                    cloud = new ChinaCloud();
+                    break;
+                case "GermanyCloud":
+                    cloud = new GermanyCloud();
+                    break; 
+                default:
+                    cloud = new PublicCloud();
+                    break;
             }
 
-            var jsonString = System.IO.File.ReadAllText("data.json");
+
+            if (!System.IO.File.Exists(cloud.Filename)) {
+                UrlModel model = new UrlModel();
+                model.updateCloud(cloud);
+            }
+
+            var jsonString = System.IO.File.ReadAllText(cloud.Filename);
             return JsonSerializer.Deserialize<ServiceTagsModel>(jsonString, options);
             
         }
