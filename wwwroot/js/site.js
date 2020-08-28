@@ -32,6 +32,7 @@ $(document).ready(function(){
                         
 
             $('#downloadlink').html('<a target=_blank href=/Home/getPrefixes?id=' + id + '>JSON Download</a>');
+            $('#opensenselink').html('<a target=_blank href=/Home/getOPNSenseURLTable?id=' + id + '>OPNsense UrlTable</a>');
 
           });
            

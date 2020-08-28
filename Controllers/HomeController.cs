@@ -9,6 +9,7 @@ using System.IO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Http.Extensions;
 using dotnet.Models;
 using HtmlAgilityPack;
 
@@ -63,6 +64,31 @@ namespace dotnet.Controllers
             }
                         
             return addressPrefixes;
+
+        }
+
+        public string getOPNsenseUrlTable(string id)
+        {
+          
+            
+            var jsonModel = getServiceTagsModel();
+
+            var opnsenseout = new System.Text.StringBuilder();
+            opnsenseout.AppendLine("; Azure IP Ranges - (c) 2020 dafalkne");
+            opnsenseout.AppendLine("; " + Request.GetDisplayUrl());
+            opnsenseout.AppendLine("; Cloud: " + jsonModel.cloud + " - Changenumber: " + jsonModel.changeNumber);
+
+            foreach (ValuesModel values in jsonModel.values) {
+                if (values.id.Equals(id)) {
+                    opnsenseout.AppendLine("; Service: " + values.id + " - Changenumber: " + values.properties.changeNumber);
+                    foreach (string net in values.properties.addressPrefixes)
+                    {
+                        opnsenseout.AppendLine(net + " ; " + values.id);
+                    } 
+                }
+            }
+                        
+            return opnsenseout.ToString();
 
         }
 
