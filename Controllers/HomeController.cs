@@ -59,7 +59,7 @@ namespace dotnet.Controllers
 
             foreach (ValuesModel values in jsonModel.values) {
                 if (values.id.Equals(id)) {
-                    addressPrefixes = JsonSerializer.Serialize(values.properties.addressPrefixes);
+                    addressPrefixes = JsonSerializer.Serialize(values.properties);
                 }
             }
                         
