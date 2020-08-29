@@ -2,7 +2,6 @@
     ViewData["Title"] = "Home Page";
 }
 
-
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <h4>Version @ViewData["changeNumber"] of Cloud @ViewData["cloud"]</h4>
@@ -21,7 +20,7 @@
             </select>
             <br />
             <div id='downloadlink'></div>
-            <div id='opensenselink'></div>
+            <div id='opensenselink' data-url='@ViewData["env"]'></div>
             
         </div>
         

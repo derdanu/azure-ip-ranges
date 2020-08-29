@@ -70,12 +70,11 @@ namespace dotnet.Controllers
             return File(file,  "application/json", filename);             
 
         }
-
-        public string getOPNsenseUrlTable(string id)
+        [HttpGet("/getOPNsenseUrlTable/{env}/{id}")]
+        public string getOPNsenseUrlTable(string id, string env)
         {
-          
-            
-            var jsonModel = getServiceTagsModel();
+                      
+            var jsonModel = getServiceTagsModel(env);
 
             var opnsenseout = new System.Text.StringBuilder();
             opnsenseout.AppendLine("; Azure IP Ranges - (c) 2020 dafalkne");
@@ -120,12 +119,10 @@ namespace dotnet.Controllers
 
         }
 
-
-        private ServiceTagsModel getServiceTagsModel() {
-
+        private ServiceTagsModel getServiceTagsModel(string env)
+        {
             
-            string env = Request.Cookies[SessionKeyName];
-
+            ViewData["env"] = env;
           
              switch (env) {
                 case "PublicCloud":
@@ -153,6 +150,12 @@ namespace dotnet.Controllers
 
             var jsonString = System.IO.File.ReadAllText(cloud.Filename);
             return JsonSerializer.Deserialize<ServiceTagsModel>(jsonString, options);
+        }
+        private ServiceTagsModel getServiceTagsModel() {
+
+            
+            string env = Request.Cookies[SessionKeyName];
+            return getServiceTagsModel(env);
             
         }
 
