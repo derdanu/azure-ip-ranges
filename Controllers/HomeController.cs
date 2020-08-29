@@ -153,8 +153,14 @@ namespace dotnet.Controllers
         }
         private ServiceTagsModel getServiceTagsModel() {
 
+            string env;
+
+            if (String.IsNullOrEmpty(Request.Cookies[SessionKeyName])) {
+                env = "PublicCloud";
+            } else {
+                env = Request.Cookies[SessionKeyName];
+            }
             
-            string env = Request.Cookies[SessionKeyName];
             return getServiceTagsModel(env);
             
         }
