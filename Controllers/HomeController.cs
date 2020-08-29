@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Net;
+using System.Text;
 using System.Text.Json;
 using System.IO;
 using Microsoft.AspNetCore.Mvc;
@@ -50,20 +51,23 @@ namespace dotnet.Controllers
         
         }
 
-        public string getPrefixes(string id)
+        public IActionResult getPrefixes(string id)
         {
             
             var jsonModel = getServiceTagsModel();
 
             String addressPrefixes = ""; 
+            String filename = "prefixes.json";
 
             foreach (ValuesModel values in jsonModel.values) {
                 if (values.id.Equals(id)) {
                     addressPrefixes = JsonSerializer.Serialize(values.properties);
+                    filename = jsonModel.cloud + "." + values.id + ".json";
                 }
             }
-                        
-            return addressPrefixes;
+            
+            var file = Encoding.ASCII.GetBytes(addressPrefixes);
+            return File(file,  "application/json", filename);             
 
         }
 
