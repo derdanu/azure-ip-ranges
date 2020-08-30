@@ -10,7 +10,7 @@ namespace dotnet.Models
         public abstract string Filename { get; }
     }
 
-    public class PublicCloud : Cloud
+    public class Public : Cloud
     { 
         public override string Url {
             get {
@@ -25,7 +25,7 @@ namespace dotnet.Models
 
     }
 
-    public class USGovCloud : Cloud
+    public class AzureGovernment : Cloud
     { 
         
         public override string Url {
@@ -42,7 +42,7 @@ namespace dotnet.Models
     }
 
     
-    public class ChinaCloud : Cloud
+    public class China : Cloud
     { 
        
         public override string Url {
@@ -59,7 +59,7 @@ namespace dotnet.Models
     }
 
     
-    public class GermanyCloud : Cloud
+    public class AzureGermany : Cloud
     { 
         
         public override string Url {

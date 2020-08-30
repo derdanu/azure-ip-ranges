@@ -10,10 +10,10 @@ namespace dotnet.Models
  
         public void updateClouds() {
 
-            updateCloud(new PublicCloud());
-            updateCloud(new USGovCloud());
-            updateCloud(new ChinaCloud());
-            updateCloud(new GermanyCloud());
+            updateCloud(new Public());
+            updateCloud(new AzureGovernment());
+            updateCloud(new China());
+            updateCloud(new AzureGermany());
 
         }
 

@@ -125,20 +125,20 @@ namespace dotnet.Controllers
             ViewData["env"] = env;
           
              switch (env) {
-                case "PublicCloud":
-                    cloud = new PublicCloud();
+                case "Public":
+                    cloud = new Public();
                     break;
-                case "USGovCloud":
-                    cloud = new USGovCloud();
+                case "AzureGovernment":
+                    cloud = new AzureGovernment();
                     break;
-                case "ChinaCloud": 
-                    cloud = new ChinaCloud();
+                case "China": 
+                    cloud = new China();
                     break;
-                case "GermanyCloud":
-                    cloud = new GermanyCloud();
+                case "AzureGermany":
+                    cloud = new AzureGermany();
                     break; 
                 default:
-                    cloud = new PublicCloud();
+                    cloud = new Public();
                     break;
             }
 
@@ -156,7 +156,7 @@ namespace dotnet.Controllers
             string env;
 
             if (String.IsNullOrEmpty(Request.Cookies[SessionKeyName])) {
-                env = "PublicCloud";
+                env = "Public";
             } else {
                 env = Request.Cookies[SessionKeyName];
             }
