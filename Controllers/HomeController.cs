@@ -21,7 +21,7 @@ namespace dotnet.Controllers
         private readonly ILogger<HomeController> _logger;
 
         private Cloud cloud; 
-
+        private List<Cloud> clouds = new List<Cloud>();
         public const string SessionKeyName = "_CloudEnv";
 
         private JsonSerializerOptions options; 
@@ -33,7 +33,11 @@ namespace dotnet.Controllers
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
                 WriteIndented = true
             };
-            
+
+            clouds.Add(new Public());
+            clouds.Add(new AzureGovernment());
+            clouds.Add(new China());
+            clouds.Add(new AzureGermany());
         }
 
 
@@ -101,7 +105,7 @@ namespace dotnet.Controllers
             try {
                 
                 UrlModel model = new UrlModel();
-                model.updateClouds();
+                model.updateClouds(clouds);
             
             } catch (Exception e) {
                 ViewData["error"]  = e.ToString();
@@ -127,24 +131,7 @@ namespace dotnet.Controllers
         {
             
             ViewData["env"] = env;
-          
-             switch (env) {
-                case "Public":
-                    cloud = new Public();
-                    break;
-                case "AzureGovernment":
-                    cloud = new AzureGovernment();
-                    break;
-                case "China": 
-                    cloud = new China();
-                    break;
-                case "AzureGermany":
-                    cloud = new AzureGermany();
-                    break; 
-                default:
-                    cloud = new Public();
-                    break;
-            }
+            cloud =  clouds.Find(x => x.CloudName.Contains(env));
 
 
             if (!System.IO.File.Exists(cloud.Filename)) {

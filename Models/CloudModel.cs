@@ -4,10 +4,16 @@ using System.Collections.Generic;
 namespace dotnet.Models
 {
 
-    abstract public class Cloud
+    abstract public class Cloud 
     {
         public abstract string Url { get; }
         public abstract string Filename { get; }
+        
+        public string CloudName {
+            get {
+                return this.GetType().Name;
+            }
+        }
     }
 
     public class Public : Cloud
