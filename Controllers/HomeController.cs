@@ -132,7 +132,10 @@ namespace dotnet.Controllers
             
             ViewData["env"] = env;
             cloud =  clouds.Find(x => x.CloudName.Contains(env));
-
+            if (cloud == null)
+            {
+                cloud = clouds[0];
+            }
 
             if (!System.IO.File.Exists(cloud.Filename)) {
                 UrlModel model = new UrlModel();
@@ -147,11 +150,10 @@ namespace dotnet.Controllers
             string env;
 
             if (String.IsNullOrEmpty(Request.Cookies[SessionKeyName])) {
-                env = "Public";
+                env = clouds[0].CloudName;
             } else {
                 env = Request.Cookies[SessionKeyName];
             }
-            
             return getServiceTagsModel(env);
             
         }
