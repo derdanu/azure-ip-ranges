@@ -19,7 +19,7 @@ namespace dotnet.Models
         }
         public override string Filename {
             get {
-                return "data_public.json";
+                return "data_Public.json";
             }
         }
 
@@ -35,7 +35,7 @@ namespace dotnet.Models
         }
         public override string Filename {
             get {
-                return "data_usgov.json";
+                return "data_AzureGovernment.json";
             }
         }
       
@@ -52,7 +52,7 @@ namespace dotnet.Models
         }
         public override string Filename {
             get {
-                return "data_china.json";
+                return "data_China.json";
             }
         }
        
@@ -69,7 +69,7 @@ namespace dotnet.Models
         }
         public override string Filename {
             get {
-                return "data_germany.json";
+                return "data_AzureGermany.json";
             }
         }
         
