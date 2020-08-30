@@ -111,6 +111,10 @@ namespace dotnet.Controllers
 
         }
 
+        public IActionResult About() 
+        {
+            return View();
+        }
         public IActionResult changeCloud(string env) {
 
             Response.Cookies.Append(SessionKeyName, env);
