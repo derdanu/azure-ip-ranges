@@ -19,7 +19,7 @@ namespace dotnet.Models
         }
         public string Filepath {
             get {
-                return "data/";
+                return "wwwroot/data/";
             }
         }
 

@@ -49,14 +49,14 @@ namespace dotnet
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(
-                    Path.Combine(env.ContentRootPath, "data")),
+                    Path.Combine(env.WebRootPath, "data")),
                 RequestPath = "/data"
             });
 
             app.UseDirectoryBrowser(new DirectoryBrowserOptions
             {
                 FileProvider = new PhysicalFileProvider(
-                    Path.Combine(env.ContentRootPath, "data")),
+                    Path.Combine(env.WebRootPath, "data")),
                 RequestPath = "/data"
             });
 
