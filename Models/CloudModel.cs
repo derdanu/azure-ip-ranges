@@ -17,6 +17,17 @@ namespace dotnet.Models
                 return this.GetType().Name;
             }
         }
+        public string Filepath {
+            get {
+                return "data/";
+            }
+        }
+
+        public string FileLocation {
+            get {
+                return this.Filepath + this.Filename;
+            }
+        }
 
         public void updateClouds(List<Cloud> clouds) {
 
@@ -35,7 +46,7 @@ namespace dotnet.Models
             string jsonUri = doc.DocumentNode.SelectSingleNode("//div[@class = 'link-align']//a").Attributes["href"].Value;
 
             WebClient myWebClient = new WebClient();
-            myWebClient.DownloadFile(jsonUri, cloud.Filename);		
+            myWebClient.DownloadFile(jsonUri, cloud.FileLocation);		
             
         
         }
@@ -51,7 +62,7 @@ namespace dotnet.Models
         }
         public override string Filename {
             get {
-                return "data_Public.json";
+                return "Public.json";
             }
         }
 
@@ -67,7 +78,7 @@ namespace dotnet.Models
         }
         public override string Filename {
             get {
-                return "data_AzureGovernment.json";
+                return "AzureGovernment.json";
             }
         }
       
@@ -84,7 +95,7 @@ namespace dotnet.Models
         }
         public override string Filename {
             get {
-                return "data_China.json";
+                return "China.json";
             }
         }
        
@@ -101,7 +112,7 @@ namespace dotnet.Models
         }
         public override string Filename {
             get {
-                return "data_AzureGermany.json";
+                return "AzureGermany.json";
             }
         }
         

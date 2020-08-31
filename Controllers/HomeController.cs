@@ -144,14 +144,14 @@ namespace dotnet.Controllers
                 cloud = clouds[0];
             }
 
-            if (!System.IO.File.Exists(cloud.Filename))
+            if (!System.IO.File.Exists(cloud.FileLocation))
             {
                 cloud.updateCloud(cloud);
             }
 
             ViewData["env"] = cloud.CloudName;
 
-            var jsonString = System.IO.File.ReadAllText(cloud.Filename);
+            var jsonString = System.IO.File.ReadAllText(cloud.FileLocation);
             return JsonSerializer.Deserialize<ServiceTagsModel>(jsonString, options);
 
         }
