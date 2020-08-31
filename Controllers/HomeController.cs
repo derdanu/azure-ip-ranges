@@ -106,7 +106,7 @@ namespace dotnet.Controllers
             arm.resources = new List<Resources>();
             arm.resources.Add(res);
 
-            var armtemplate = JsonSerializer.SerializeToUtf8Bytes(arm);
+            var armtemplate = JsonSerializer.SerializeToUtf8Bytes(arm, options);
                         
             return File(armtemplate, "application/json", filename);
 
@@ -118,20 +118,20 @@ namespace dotnet.Controllers
 
             var jsonModel = getServiceTagsModel();
 
-            String addressPrefixes = "";
+            byte[] addressPrefixes = {};
+
             String filename = "prefixes.json";
 
             foreach (ValuesModel values in jsonModel.values)
             {
                 if (values.id.Equals(id))
                 {
-                    addressPrefixes = JsonSerializer.Serialize(values.properties);
+                    addressPrefixes = JsonSerializer.SerializeToUtf8Bytes(values.properties, options);
                     filename = jsonModel.cloud + "." + values.id + ".json";
                 }
             }
 
-            var file = Encoding.ASCII.GetBytes(addressPrefixes);
-            return File(file, "application/json", filename);
+           return File(addressPrefixes, "application/json", filename);
 
         }
         [HttpGet("/getOPNsenseUrlTable/{env}/{id}")]
