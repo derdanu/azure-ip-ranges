@@ -20,7 +20,7 @@ namespace dotnet.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        private Cloud cloud;
+        private Cloud cloud = new Public();
         private List<Cloud> clouds = new List<Cloud>();
         public const string SessionKeyName = "_CloudEnv";
 
@@ -110,8 +110,7 @@ namespace dotnet.Controllers
             try
             {
 
-                UrlModel model = new UrlModel();
-                model.updateClouds(clouds);
+                cloud.updateClouds(clouds);
 
             }
             catch (Exception e)
@@ -148,8 +147,7 @@ namespace dotnet.Controllers
 
             if (!System.IO.File.Exists(cloud.Filename))
             {
-                UrlModel model = new UrlModel();
-                model.updateCloud(cloud);
+                cloud.updateCloud(cloud);
             }
 
             var jsonString = System.IO.File.ReadAllText(cloud.Filename);
