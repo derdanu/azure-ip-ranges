@@ -32,6 +32,8 @@ $(document).ready(function(){
                         
 
             $('#downloadlink').html('<a href=/Home/getPrefixes?id=' + id + '>JSON Download</a>');
+            $('#armdownloadlink').html('<a href=/Home/downloadARMTemplate?id=' + id + '>ARM Download</a>');
+
             $('#opensenselink').html('<a target=_blank href=/getOPNSenseURLTable/' + $('#opensenselink').data('url') + '/' + id + '>OPNsense UrlTable</a>');
 
           });

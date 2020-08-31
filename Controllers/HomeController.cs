@@ -55,6 +55,63 @@ namespace dotnet.Controllers
             return View();
 
         }
+        
+        public IActionResult downloadARMTemplate(string id)
+        {
+
+            var jsonModel = getServiceTagsModel();
+
+            String filename = "prefixes.json";
+
+            ARMModel arm = new ARMModel();                        
+            arm.schema = "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#";
+            arm.contentVersion = "1.0.0.0";
+            
+            Properties prop = new Properties();
+            prop.routes = new List<Route>();
+   
+            foreach (ValuesModel values in jsonModel.values)
+            {
+                if (values.id.Equals(id))
+                {
+                    var i = 1;
+                    foreach (String prefix in values.properties.addressPrefixes) {
+                        
+                        Route route = new Route();
+                        route.name = $"{jsonModel.cloud}.{values.id}-{i:000}"; 
+
+                        RouteProperties routeprop = new RouteProperties();
+                        routeprop.addressPrefix = prefix;
+                        routeprop.nextHopType = "Internet";
+                        
+                        route.properties = routeprop;
+                        
+                        prop.routes.Add(route);
+                        
+                        i++;
+                    }
+                                
+                    filename = jsonModel.cloud + "." + values.id + ".arm.json";
+                }
+            }
+           
+
+            Resources res = new Resources();
+            res.type = "Microsoft.Network/routeTables";
+            res.name = "Routetable";
+            res.apiVersion = "2015-06-15";
+            res.location = "[resourceGroup().location]";
+            res.properties = prop;
+
+            arm.resources = new List<Resources>();
+            arm.resources.Add(res);
+
+            var armtemplate = JsonSerializer.SerializeToUtf8Bytes(arm);
+                        
+            return File(armtemplate, "application/json", filename);
+
+
+        }
 
         public IActionResult getPrefixes(string id)
         {
