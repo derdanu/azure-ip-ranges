@@ -45,8 +45,6 @@ namespace dotnet.Models
 
             string jsonUri = doc.DocumentNode.SelectSingleNode("//div[@class = 'link-align']//a").Attributes["href"].Value;
 
-            System.IO.Directory.CreateDirectory(cloud.Filepath);
-
             WebClient myWebClient = new WebClient();
             myWebClient.DownloadFile(jsonUri, cloud.FileLocation);		
             
