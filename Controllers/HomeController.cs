@@ -138,7 +138,6 @@ namespace dotnet.Controllers
         private ServiceTagsModel getServiceTagsModel(string env)
         {
 
-            ViewData["env"] = env;
             cloud = clouds.Find(x => x.CloudName.Contains(env));
             if (cloud == null)
             {
@@ -149,6 +148,8 @@ namespace dotnet.Controllers
             {
                 cloud.updateCloud(cloud);
             }
+
+            ViewData["env"] = cloud.CloudName;
 
             var jsonString = System.IO.File.ReadAllText(cloud.Filename);
             return JsonSerializer.Deserialize<ServiceTagsModel>(jsonString, options);
