@@ -46,13 +46,6 @@ namespace dotnet
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                FileProvider = new PhysicalFileProvider(
-                    Path.Combine(env.WebRootPath, "data")),
-                RequestPath = "/data"
-            });
-
             app.UseDirectoryBrowser(new DirectoryBrowserOptions
             {
                 FileProvider = new PhysicalFileProvider(
