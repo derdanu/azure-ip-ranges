@@ -6,6 +6,8 @@ namespace dotnet.Models
 {
     public class ARMModel
     {
+        [JsonIgnore]
+        public string filename { get; set; } 
         [JsonPropertyName("$schema")]
         public string schema { get; set; }
         public string contentVersion { get; set; }

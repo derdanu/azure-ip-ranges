@@ -37,10 +37,10 @@ $(document).ready(function(){
                 $('#resultarea').append(msg.addressPrefixes[i] + '\n');
             }
                         
-            var armdownloadlink = 'downloadARMTemplate/' + $('#armdownloadlink').data('url') + '/' + id;
+   
             $('#downloadlink').html('<a href=/Home/getPrefixes?id=' + id + '>JSON Download</a>');
-            $('#armdownloadlink').html('<a href=' + armdownloadlink + '>ARM Download</a>');
-            $('#deploytoazure').html('<a href="https://portal.azure.com/#create/Microsoft.Template/uri/' + urlEnc(window.location.origin) + urlEnc('/') + urlEnc(armdownloadlink) + '">Deploy to Azure</a>');
+            $('#armdownloadlink').html('<a href=downloadARMTemplate/' + $('#armdownloadlink').data('url') + '/' + id + '>ARM Download</a>');
+            $('#deploytoazure').html('<a target=_blank href="https://portal.azure.com/#create/Microsoft.Template/uri/' + urlEnc(window.location.origin) + urlEnc('/') + urlEnc('deployARMTemplate/' + $('#deploytoazure').data('url') + '/' + id) + '">Deploy to Azure</a>');
             $('#opensenselink').html('<a target=_blank href=/getOPNSenseURLTable/' + $('#opensenselink').data('url') + '/' + id + '>OPNsense UrlTable</a>');
 
           });

@@ -56,17 +56,15 @@ namespace dotnet.Controllers
 
         }
 
-        [HttpGet("/downloadARMTemplate/{env}/{id}")]
-        public FileContentResult downloadARMTemplate(string id, string env)
+        private ARMModel getARMTemplate(string id, string env) 
         {
-
+            
             var jsonModel = getServiceTagsModel(env);
-
-            String filename = "prefixes.json";
 
             ARMModel arm = new ARMModel();                        
             arm.schema = "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#";
             arm.contentVersion = "1.0.0.0";
+            arm.filename = "template.json";
             
             Properties prop = new Properties();
             prop.routes = new List<Route>();
@@ -92,7 +90,7 @@ namespace dotnet.Controllers
                         i++;
                     }
                                 
-                    filename = jsonModel.cloud + "." + values.id + ".arm.json";
+                    arm.filename = jsonModel.cloud + "." + values.id + ".arm.json";
                 }
             }
            
@@ -106,13 +104,33 @@ namespace dotnet.Controllers
 
             arm.resources = new List<Resources>();
             arm.resources.Add(res);
+            
+            return arm;
+        }
+
+
+        [HttpGet("/downloadARMTemplate/{env}/{id}")]
+        public FileContentResult downloadARMTemplate(string id, string env)
+        {
+
+            ARMModel arm = getARMTemplate(id, env);
 
             var armtemplate = JsonSerializer.SerializeToUtf8Bytes(arm, options);
                         
-            return File(armtemplate, "application/json", filename);
+            return File(armtemplate, "application/json", arm.filename);
 
 
         }
+
+        [HttpGet("/deployARMTemplate/{env}/{id}")]
+        public String deployARMTemplate(string id, string env)
+        {
+
+            ARMModel arm = getARMTemplate(id, env);
+
+            return JsonSerializer.Serialize(arm, options);
+                        
+        }        
 
         public IActionResult getPrefixes(string id)
         {
