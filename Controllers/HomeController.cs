@@ -55,11 +55,12 @@ namespace dotnet.Controllers
             return View();
 
         }
-        
-        public IActionResult downloadARMTemplate(string id)
+
+        [HttpGet("/downloadARMTemplate/{env}/{id}")]
+        public FileContentResult downloadARMTemplate(string id, string env)
         {
 
-            var jsonModel = getServiceTagsModel();
+            var jsonModel = getServiceTagsModel(env);
 
             String filename = "prefixes.json";
 

@@ -8,6 +8,13 @@ $(document).ready(function(){
     // Initialize select2
     $('#selST').select2();
 
+    function urlEnc(s) {
+      return s.replace(/:/g, '%3A')
+        .replace(/\//g, '%2F')
+        .replace(/\?/g, '%3F')
+        .replace(/=/g, '%3D');
+    }
+
     // Read selected option
     $('#selST').change(function(){
         var id = $('#selST option:selected').text();
@@ -30,10 +37,10 @@ $(document).ready(function(){
                 $('#resultarea').append(msg.addressPrefixes[i] + '\n');
             }
                         
-
+            var armdownloadlink = 'downloadARMTemplate/' + $('#armdownloadlink').data('url') + '/' + id;
             $('#downloadlink').html('<a href=/Home/getPrefixes?id=' + id + '>JSON Download</a>');
-            $('#armdownloadlink').html('<a href=/Home/downloadARMTemplate?id=' + id + '>ARM Download</a>');
-
+            $('#armdownloadlink').html('<a href=' + armdownloadlink + '>ARM Download</a>');
+            $('#deploytoazure').html('<a href="https://portal.azure.com/#create/Microsoft.Template/uri/' + urlEnc(window.location.origin) + urlEnc('/') + urlEnc(armdownloadlink) + '">Deploy to Azure</a>');
             $('#opensenselink').html('<a target=_blank href=/getOPNSenseURLTable/' + $('#opensenselink').data('url') + '/' + id + '>OPNsense UrlTable</a>');
 
           });
