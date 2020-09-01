@@ -12,7 +12,7 @@ namespace dotnet.Models
         public string schema { get; set; }
         public string contentVersion { get; set; }
         public string apiProfile { get; set; }
-        public List<Parameters> parameters { get; set; }
+        public Parameters parameters { get; set; }
         public List<Variables> variables { get; set; }
         public List<Functions> functions { get; set; }
         public List<Resources> resources { get; set; }
@@ -21,6 +21,14 @@ namespace dotnet.Models
 
     public class Parameters
     {
+        public ParameterOptions  name { get; set; }
+
+    }
+
+    public class ParameterOptions
+    {
+        public String type { get; set; }
+        public String defaultValue { get; set; }
 
     }
 

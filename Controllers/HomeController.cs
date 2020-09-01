@@ -66,6 +66,16 @@ namespace dotnet.Controllers
             arm.contentVersion = "1.0.0.0";
             arm.filename = "template.json";
             
+            ParameterOptions paraoptions = new ParameterOptions();
+            paraoptions.type = "String";
+            paraoptions.defaultValue = "Routetable";
+            
+            Parameters para = new Parameters();
+            para.name = paraoptions;
+                        
+            
+            arm.parameters = para;
+
             Properties prop = new Properties();
             prop.routes = new List<Route>();
    
