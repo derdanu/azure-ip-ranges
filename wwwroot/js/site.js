@@ -31,7 +31,8 @@ $(document).ready(function(){
             
             var msg = $.parseJSON(rsp);
 
-            $('#result').html('<textarea id="resultarea" class="form-control" rows="' + msg.addressPrefixes.length + '"></textarea>'); 
+            $('#result').html('<p>Found: ' + msg.addressPrefixes.length + ' matching IP ranges</p>');
+            $('#result').append('<textarea id="resultarea" class="form-control" rows="' + msg.addressPrefixes.length + '"></textarea>'); 
 
             for (var i = 0; i < msg.addressPrefixes.length ; i++) {
                 $('#resultarea').append(msg.addressPrefixes[i] + '\n');
