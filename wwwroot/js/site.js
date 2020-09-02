@@ -32,6 +32,7 @@ $(document).ready(function(){
             var msg = $.parseJSON(rsp);
 
             $('#result').html('<p>Found: ' + msg.addressPrefixes.length + ' matching IP ranges</p>');
+            if (msg.addressPrefixes.length > 400)  $('#result').append('<p class="text-danger">UDRs in Azure have a maximum limit of 400 routes</p>');
             $('#result').append('<textarea id="resultarea" class="form-control" rows="' + msg.addressPrefixes.length + '"></textarea>'); 
 
             for (var i = 0; i < msg.addressPrefixes.length ; i++) {
