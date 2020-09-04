@@ -78,9 +78,12 @@ namespace dotnet.Controllers
             Properties prop = new Properties();
             prop.routes = new List<Route>();
    
+            String[] ids = id.Split(';');
+            arm.filename = jsonModel.cloud;
+
             foreach (ValuesModel values in jsonModel.values)
             {
-                if (values.id.Equals(id))
+                if (Array.IndexOf(ids, values.id) != -1)
                 {
                     var i = 1;
                     foreach (String prefix in values.properties.addressPrefixes) {
@@ -99,10 +102,11 @@ namespace dotnet.Controllers
                         i++;
                     }
                                 
-                    arm.filename = jsonModel.cloud + "." + values.id + ".arm.json";
+                    arm.filename += "." + values.id;
                 }
             }
            
+           arm.filename +=  ".arm.json";
 
             Resources res = new Resources();
             res.type = "Microsoft.Network/routeTables";
@@ -140,8 +144,9 @@ namespace dotnet.Controllers
             return JsonSerializer.Serialize(arm, options);
                         
         }        
-
-        public IActionResult getPrefixes(string id)
+        
+        [HttpGet("/getPrefixes/{env}/{id}")]
+        public IActionResult getPrefixes(string id, string env)
         {
 
             var jsonModel = getServiceTagsModel();
@@ -149,17 +154,21 @@ namespace dotnet.Controllers
             byte[] addressPrefixes = {};
 
             String filename = "prefixes.json";
-
+            List<PropertiesModel> prop = new List<PropertiesModel>();
+                
+            String[] ids = id.Split(';');
+      
             foreach (ValuesModel values in jsonModel.values)
             {
-                if (values.id.Equals(id))
-                {
-                    addressPrefixes = JsonSerializer.SerializeToUtf8Bytes(values.properties, options);
+                if (Array.IndexOf(ids, values.id) != -1)
+                    {
+                    prop.Add(values.properties);
                     filename = jsonModel.cloud + "." + values.id + ".json";
                 }
             }
 
-           return File(addressPrefixes, "application/json", filename);
+            addressPrefixes = JsonSerializer.SerializeToUtf8Bytes(prop, options);
+            return File(addressPrefixes, "application/json", filename);
 
         }
         [HttpGet("/getOPNsenseUrlTable/{env}/{id}")]
@@ -173,9 +182,11 @@ namespace dotnet.Controllers
             opnsenseout.AppendLine("; " + Request.GetDisplayUrl());
             opnsenseout.AppendLine("; Cloud: " + jsonModel.cloud + " - Changenumber: " + jsonModel.changeNumber);
 
+            String[] ids = id.Split(';');
+
             foreach (ValuesModel values in jsonModel.values)
             {
-                if (values.id.Equals(id))
+                if (Array.IndexOf(ids, values.id) != -1)
                 {
                     opnsenseout.AppendLine("; Service: " + values.id + " - Changenumber: " + values.properties.changeNumber);
                     foreach (string net in values.properties.addressPrefixes)

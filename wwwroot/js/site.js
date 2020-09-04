@@ -12,38 +12,62 @@ $(document).ready(function(){
       return s.replace(/:/g, '%3A')
         .replace(/\//g, '%2F')
         .replace(/\?/g, '%3F')
-        .replace(/=/g, '%3D');
+        .replace(/=/g, '%3D')
+        .replace(/;/g, '%3B');
     }
 
     // Read selected option
     $('#selST').change(function(){
-        var id = $('#selST option:selected').text();
+        //var id = $('#selST option:selected').text();
         //var val = $('#selST').val();
-        
+ 
+        var id = '';
+        $.each( $('#selST').val(), function( index, value ){
+          console.log(index + ": " + value );
+          id += value
+          if (index < $('#selST').val().length - 1 ) { id += ';'; }
+        });
+       
         var request = $.ajax({
-            url: "/Home/getPrefixes",
+            url: "/getPrefixes/" + $('#downloadlink').data('url') + '/' + id,
             method: "GET",
-            data: { id : id },
             dataType: "html"
           });
            
           request.done(function( rsp ) {
             
-            var msg = $.parseJSON(rsp);
+            var json = $.parseJSON(rsp);
+            var servicecnt = 0;
+            var ranges = [];
+           
+            $.each(json, function ( index, service) {
+              servicecnt += service.addressPrefixes.length;
+              ranges.push(service.addressPrefixes);
+            });
+            if (servicecnt > 0) {
+              $('#result').html('<p>Found: ' + servicecnt + ' matching IP ranges out of ' + json.length + ' services</p>');
+              if (servicecnt > 400)  $('#result').append('<p class="text-danger">UDRs in Azure have a maximum limit of 400 routes</p>');
+              $('#result').append('<textarea id="resultarea" class="form-control" rows="' + servicecnt + '"></textarea>'); 
 
-            $('#result').html('<p>Found: ' + msg.addressPrefixes.length + ' matching IP ranges</p>');
-            if (msg.addressPrefixes.length > 400)  $('#result').append('<p class="text-danger">UDRs in Azure have a maximum limit of 400 routes</p>');
-            $('#result').append('<textarea id="resultarea" class="form-control" rows="' + msg.addressPrefixes.length + '"></textarea>'); 
-
-            for (var i = 0; i < msg.addressPrefixes.length ; i++) {
-                $('#resultarea').append(msg.addressPrefixes[i] + '\n');
+              $.each(ranges, function (index, prefixes) {
+                  $.each(prefixes, function (index2, prefix) {
+                    $('#resultarea').append(prefix + '\n');
+                  });
+                  
+              });
+ 
+              $('#downloadlink').html('<a class="btn btn-light btn-block" href=getPrefixes/' + $('#downloadlink').data('url') + '/' + id + '>JSON Download</a>');
+              $('#armdownloadlink').html('<a class="btn btn-light btn-block" href=downloadARMTemplate/' + $('#armdownloadlink').data('url') + '/' + id + '>ARM Download</a>');
+              $('#deploytoazure').html('<a class="btn btn-light btn-block" target=_blank href="https://portal.azure.com/#create/Microsoft.Template/uri/' + urlEnc(window.location.origin) + urlEnc('/') + urlEnc('deployARMTemplate/' + $('#deploytoazure').data('url') + '/' + id) + '">Deploy UDR to Azure</a>');
+              $('#opensenselink').html('<a class="btn btn-light btn-block" target=_blank href=/getOPNSenseURLTable/' + $('#opensenselink').data('url') + '/' + id + '>OPNsense UrlTable</a>');
+            } else {
+              $('#links').each(function( index ) {
+                $(this).html('');
+              });
+              $('#result').html('');
+              $('#resultarea').html('');
             }
-                        
-   
-            $('#downloadlink').html('<a class="btn btn-light btn-block" href=/Home/getPrefixes?id=' + id + '>JSON Download</a>');
-            $('#armdownloadlink').html('<a class="btn btn-light btn-block" href=downloadARMTemplate/' + $('#armdownloadlink').data('url') + '/' + id + '>ARM Download</a>');
-            $('#deploytoazure').html('<a class="btn btn-light btn-block" target=_blank href="https://portal.azure.com/#create/Microsoft.Template/uri/' + urlEnc(window.location.origin) + urlEnc('/') + urlEnc('deployARMTemplate/' + $('#deploytoazure').data('url') + '/' + id) + '">Deploy UDR to Azure</a>');
-            $('#opensenselink').html('<a class="btn btn-light btn-block" target=_blank href=/getOPNSenseURLTable/' + $('#opensenselink').data('url') + '/' + id + '>OPNsense UrlTable</a>');
+            
 
           });
            
