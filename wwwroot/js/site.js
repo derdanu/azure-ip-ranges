@@ -64,7 +64,7 @@ $(document).ready(function(){
            
           request.fail(function( jqXHR, textStatus ) {
 
-            $('#links').each(function( index ) {
+            $('#links').children('div').each(function( index ) {
               $(this).html('');
             });
             $('#result').html('');
