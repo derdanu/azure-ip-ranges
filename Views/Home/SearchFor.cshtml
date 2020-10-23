@@ -1,0 +1,36 @@
+@{
+    ViewData["Title"] = "Search for IP";
+}
+
+    @if (ViewBag.clouds != null) {
+
+        <h1>@ViewData["Title"]: @ViewData["ip"]</h1>
+
+        @if (ViewBag.clouds.Count > 0) {
+            @foreach (String cloud in  @ViewBag.clouds)
+            {
+                <p>@cloud</p>
+            }
+
+        } 
+        else
+        {
+            <p>not found</p>
+        }
+        
+    } else
+    {
+        <h1>@ViewData["Title"]</h1>
+
+        <form asp-controller="Home" asp-action="SearchFor" method="get">
+        <div class="form-group">
+            <input type="ip" class="form-control" id="ip" name="Ip" aria-describedby="ipHelp" placeholder="Enter ip address">
+        </div>
+        <div class="form-submit">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+        </form>
+
+    }
+
+

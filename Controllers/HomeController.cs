@@ -13,6 +13,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http.Extensions;
 using dotnet.Models;
 using HtmlAgilityPack;
+using NetTools;
+
 
 namespace dotnet.Controllers
 {
@@ -55,6 +57,55 @@ namespace dotnet.Controllers
             return View();
 
         }
+
+        [HttpGet("/SearchFor/")]
+        [HttpGet("/SearchFor/{ip}")]
+        public IActionResult SearchFor(string ip)
+        {
+
+            if (!String.IsNullOrEmpty(ip)) {
+
+
+                try {
+
+                    List<String> results  = new List<String>();
+
+                    @ViewData["ip"] = ip;
+
+                    foreach (Cloud cloud in clouds) {
+
+                       var jsonModel = getServiceTagsModel(cloud.CloudName);
+
+                       foreach (ValuesModel model in jsonModel.values) {
+
+                            foreach (String prefix in model.properties.addressPrefixes) {
+                                if (IPAddressRange.Parse(prefix).Contains(IPAddress.Parse(ip)))
+                                {
+                                    results.Add(model.name);
+                                }
+                            }
+
+                       }
+
+                        if (results.Count > 0) break;
+
+                    }
+
+                    ViewBag.clouds = results;
+
+                } catch {
+
+                }
+               
+               
+            }
+
+         
+            
+            return View();
+
+        }
+
 
         private ARMModel getARMTemplate(string id, string env) 
         {
