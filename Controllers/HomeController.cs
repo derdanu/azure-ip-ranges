@@ -162,7 +162,7 @@ namespace dotnet.Controllers
             Resources res = new Resources();
             res.type = "Microsoft.Network/routeTables";
             res.name = "[parameters('name')]";
-            res.apiVersion = "2015-06-15";
+            res.apiVersion = "2017-10-01";
             res.location = "[resourceGroup().location]";
             res.properties = prop;
 
