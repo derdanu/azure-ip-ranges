@@ -43,7 +43,7 @@ namespace dotnet.Models
             HtmlWeb web = new HtmlWeb();
             HtmlDocument doc = web.Load(cloud.Url);
 
-            string jsonUri = doc.DocumentNode.SelectSingleNode("//div[@class = 'link-align']//a").Attributes["href"].Value;
+            string jsonUri = doc.DocumentNode.SelectSingleNode("//*[@id='rootContainer_DLCDetails']/section[3]/div/div/div/div/div/a").Attributes["href"].Value;
 
             WebClient myWebClient = new WebClient();
             myWebClient.DownloadFile(jsonUri, cloud.FileLocation);		
@@ -57,7 +57,7 @@ namespace dotnet.Models
     { 
         public override string Url {
             get {
-                return "https://www.microsoft.com/en-us/download/confirmation.aspx?id=56519";
+                return "https://www.microsoft.com/download/details.aspx?id=56519";
             }
         }
         public override string Filename {
@@ -73,7 +73,7 @@ namespace dotnet.Models
         
         public override string Url {
             get {
-                return "https://www.microsoft.com/en-us/download/confirmation.aspx?id=57063";
+                return "https://www.microsoft.com/download/details.aspx?id=57063";
             }
         }
         public override string Filename {
@@ -90,7 +90,7 @@ namespace dotnet.Models
        
         public override string Url {
             get {
-                return "https://www.microsoft.com/en-us/download/confirmation.aspx?id=57062";
+                return "https://www.microsoft.com/download/details.aspx?id=57062";
             }
         }
         public override string Filename {
@@ -107,7 +107,7 @@ namespace dotnet.Models
         
         public override string Url {
             get {
-                return "https://www.microsoft.com/en-us/download/confirmation.aspx?id=57064";
+                return "https://www.microsoft.com/download/details.aspx?id=57064";
             }
         }
         public override string Filename {
