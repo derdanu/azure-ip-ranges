@@ -9,4 +9,11 @@
     <PackageReference Include="IPAddressRange" Version="6.1.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="web.config.template">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <TargetPath>web.config</TargetPath>
+    </None>
+  </ItemGroup>
+  
 </Project>
