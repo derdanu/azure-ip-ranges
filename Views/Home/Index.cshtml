@@ -12,9 +12,16 @@
         <div class="col-sm-4">
             <div class="input-group mb-3">
                 <select id='selST' multiple="multiple">
-                    @foreach (ValuesModel st in  @ViewBag.ServiceTags)
+                    @if (ViewBag.ServiceTags != null)
                     {
-                        <option value="@st.id">@st.name</option>
+                        foreach (ValuesModel st in ViewBag.ServiceTags)
+                        {
+                            <option value="@st.id">@st.name</option>
+                        }
+                    }
+                    else
+                    {
+                        <option disabled selected>No data available</option>
                     }
                 </select>
             </div>

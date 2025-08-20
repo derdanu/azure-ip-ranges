@@ -298,7 +298,16 @@ namespace dotnet.Controllers
 
             ViewData["env"] = cloud.CloudName;
 
-            var jsonString = System.IO.File.ReadAllText(cloud.FileLocation);
+            string jsonString;
+            if (System.IO.File.Exists(cloud.FileLocation))
+            {
+                jsonString = System.IO.File.ReadAllText(cloud.FileLocation);
+            }
+            else
+            {
+                jsonString = "{}"; // or handle as needed, e.g., throw, log, or return a default object
+            }
+            
             return JsonSerializer.Deserialize<ServiceTagsModel>(jsonString, options);
 
         }
