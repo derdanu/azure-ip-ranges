@@ -52,7 +52,7 @@ namespace dotnet.Controllers
             ViewData["changeNumber"] = jsonModel.changeNumber;
             ViewData["cloud"] = jsonModel.cloud;
 
-            ViewBag.serviceTags = jsonModel.values;
+            ViewBag.ServiceTags = jsonModel.values;
 
             return View();
 
@@ -251,13 +251,13 @@ namespace dotnet.Controllers
 
         }
 
-        public IActionResult Update()
+        public async Task<IActionResult> Update()
         {
 
             try
             {
 
-                cloud.updateClouds(clouds);
+                await cloud.UpdateCloudsAsync(clouds);
 
             }
             catch (Exception e)
@@ -284,6 +284,11 @@ namespace dotnet.Controllers
 
         private ServiceTagsModel getServiceTagsModel(string env)
         {
+            return getServiceTagsModelAsync(env).GetAwaiter().GetResult();
+        }
+
+        private async Task<ServiceTagsModel> getServiceTagsModelAsync(string env)
+        {
 
             cloud = clouds.Find(x => x.CloudName.Contains(env));
             if (cloud == null)
@@ -293,7 +298,7 @@ namespace dotnet.Controllers
 
             if (!System.IO.File.Exists(cloud.FileLocation))
             {
-                cloud.updateCloud(cloud);
+                await cloud.UpdateCloudAsync(cloud);
             }
 
             ViewData["env"] = cloud.CloudName;
@@ -301,7 +306,7 @@ namespace dotnet.Controllers
             string jsonString;
             if (System.IO.File.Exists(cloud.FileLocation))
             {
-                jsonString = System.IO.File.ReadAllText(cloud.FileLocation);
+                jsonString = await System.IO.File.ReadAllTextAsync(cloud.FileLocation);
             }
             else
             {
