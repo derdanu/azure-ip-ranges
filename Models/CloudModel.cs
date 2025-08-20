@@ -52,6 +52,11 @@ namespace dotnet.Models
                 var response = await httpClient.GetAsync(jsonUri);
                 response.EnsureSuccessStatusCode();
                 var content = await response.Content.ReadAsByteArrayAsync();
+                string directory = Path.GetDirectoryName(cloud.FileLocation);
+                if (!Directory.Exists(directory))
+                {
+                    Directory.CreateDirectory(directory);
+                }
                 File.WriteAllBytes(cloud.FileLocation, content);
             }
         

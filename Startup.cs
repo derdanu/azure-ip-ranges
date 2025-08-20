@@ -46,10 +46,16 @@ namespace dotnet
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             
+            // Ensure the "data" folder exists in the web root
+            var dataFolder = Path.Combine(env.WebRootPath, "data");
+            if (!Directory.Exists(dataFolder))
+            {
+                Directory.CreateDirectory(dataFolder);
+            }
+
             app.UseDirectoryBrowser(new DirectoryBrowserOptions
             {
-                FileProvider = new PhysicalFileProvider(
-                    Path.Combine(env.WebRootPath, "data")),
+                FileProvider = new PhysicalFileProvider(dataFolder),
                 RequestPath = "/data"
             });
 
