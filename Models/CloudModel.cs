@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using HtmlAgilityPack;
 using System.Text.Json;
 using System.Net;
+using System.Net.Http;
+using System.IO;
 
 namespace dotnet.Models
 {
@@ -38,16 +40,20 @@ namespace dotnet.Models
 
         }
 
-        public void updateCloud(Cloud cloud) {
+        public async void updateCloud(Cloud cloud) {
 
             HtmlWeb web = new HtmlWeb();
             HtmlDocument doc = web.Load(cloud.Url);
 
             string jsonUri = doc.DocumentNode.SelectSingleNode("//*[@id='rootContainer_DLCDetails']/section[3]/div/div/div/div/div/a").Attributes["href"].Value;
 
-            WebClient myWebClient = new WebClient();
-            myWebClient.DownloadFile(jsonUri, cloud.FileLocation);		
-            
+            using (HttpClient httpClient = new HttpClient())
+            {
+                var response = await httpClient.GetAsync(jsonUri);
+                response.EnsureSuccessStatusCode();
+                var content = await response.Content.ReadAsByteArrayAsync();
+                File.WriteAllBytes(cloud.FileLocation, content);
+            }
         
         }
 
