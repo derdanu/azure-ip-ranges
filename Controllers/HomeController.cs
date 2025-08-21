@@ -313,7 +313,21 @@ namespace dotnet.Controllers
                 jsonString = "{}"; // or handle as needed, e.g., throw, log, or return a default object
             }
             
-            return JsonSerializer.Deserialize<ServiceTagsModel>(jsonString, options);
+            try
+            {
+                return JsonSerializer.Deserialize<ServiceTagsModel>(jsonString, options);
+            }
+            catch (JsonException ex)
+            {
+                // Log the error and return a minimal valid model to prevent crashes
+                Console.WriteLine($"JSON parsing error in getServiceTagsModelAsync: {ex.Message}");
+                return new ServiceTagsModel
+                {
+                    changeNumber = 0,
+                    cloud = env ?? "Public",
+                    values = new List<ValuesModel>()
+                };
+            }
 
         }
         private ServiceTagsModel getServiceTagsModel()

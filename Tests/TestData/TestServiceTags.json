@@ -1,0 +1,35 @@
+{
+  "changeNumber": 123,
+  "cloud": "Public",
+  "values": [
+    {
+      "name": "ActionGroup",
+      "id": "ActionGroup",
+      "properties": {
+        "changeNumber": 1,
+        "region": "",
+        "platform": "Azure",
+        "systemService": "ActionGroup",
+        "addressPrefixes": [
+          "13.66.60.119/32",
+          "13.66.143.220/30",
+          "13.66.202.14/32"
+        ]
+      }
+    },
+    {
+      "name": "AzureActiveDirectory",
+      "id": "AzureActiveDirectory",
+      "properties": {
+        "changeNumber": 2,
+        "region": "",
+        "platform": "Azure",
+        "systemService": "AzureActiveDirectory",
+        "addressPrefixes": [
+          "20.190.128.0/18",
+          "40.126.0.0/18"
+        ]
+      }
+    }
+  ]
+}

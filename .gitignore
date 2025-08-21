@@ -1,3 +1,6 @@
 obj/*
 bin/*
 wwwroot/data/*.json
+Tests/obj/*
+Tests/bin/*
+Tests/TestResults/*
