@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Net;
 using System.Text;
@@ -21,6 +22,7 @@ namespace dotnet.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private static readonly SemaphoreSlim _updateLock = new SemaphoreSlim(1, 1);
 
         private Cloud cloud = new Public();
         private List<Cloud> clouds = new List<Cloud>();
@@ -229,7 +231,7 @@ namespace dotnet.Controllers
             var jsonModel = getServiceTagsModel(env);
 
             var opnsenseout = new System.Text.StringBuilder();
-            opnsenseout.AppendLine("; Azure IP Ranges - (c) 2020 dafalkne");
+            opnsenseout.AppendLine("; Azure IP Ranges - (c) 2026 dafalkne");
             opnsenseout.AppendLine("; " + Request.GetDisplayUrl());
             opnsenseout.AppendLine("; Cloud: " + jsonModel.cloud + " - Changenumber: " + jsonModel.changeNumber);
 
@@ -253,20 +255,29 @@ namespace dotnet.Controllers
 
         public async Task<IActionResult> Update()
         {
+            // Try to acquire lock without waiting (non-blocking)
+            bool lockAcquired = await _updateLock.WaitAsync(0);
+            
+            if (!lockAcquired)
+            {
+                ViewData["error"] = "Update is already in progress. Please wait for the current update to complete.";
+                return View();
+            }
 
             try
             {
-
                 await cloud.UpdateCloudsAsync(clouds);
-
             }
             catch (Exception e)
             {
                 ViewData["error"] = e.ToString();
             }
+            finally
+            {
+                _updateLock.Release();
+            }
 
             return View();
-
         }
 
         public IActionResult About()
