@@ -231,7 +231,7 @@ namespace dotnet.Controllers
             var jsonModel = getServiceTagsModel(env);
 
             var opnsenseout = new System.Text.StringBuilder();
-            opnsenseout.AppendLine("; Azure IP Ranges - (c) 2020 dafalkne");
+            opnsenseout.AppendLine("; Azure IP Ranges - (c) 2026 dafalkne");
             opnsenseout.AppendLine("; " + Request.GetDisplayUrl());
             opnsenseout.AppendLine("; Cloud: " + jsonModel.cloud + " - Changenumber: " + jsonModel.changeNumber);
 
