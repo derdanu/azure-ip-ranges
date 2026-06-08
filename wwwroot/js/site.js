@@ -44,7 +44,7 @@ $(document).ready(function(){
             });
 
               $('#result').html('<p>Found: ' + servicecnt + ' matching IP ranges out of ' + json.length + ' services</p>');
-              if (servicecnt > 400)  $('#result').append('<p class="text-danger">UDRs in Azure have a maximum limit of 400 routes</p>');
+              if (servicecnt > 1000)  $('#result').append('<p class="text-danger">UDRs in Azure have a maximum limit of 1000 routes</p>');
               $('#result').append('<textarea id="resultarea" class="form-control" rows="' + servicecnt + '"></textarea>'); 
 
               $.each(ranges, function (index, prefixes) {
